@@ -33,7 +33,7 @@ import {
 
 const formSchema = z.object({
   name: z.string().min(2),
-  categoryId: z.string().min(1),
+  billboardId: z.string().min(1),
 });
 
 type CategoryFormValues = z.infer<typeof formSchema>;
@@ -62,11 +62,12 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       name: "",
-      categoryId: "",
+      billboardId: "",
     },
   });
 
   const onSubmit = async (data: CategoryFormValues) => {
+    console.log("initialdata",initialData);
     try {
       setLoading(true);
       if (initialData) {
@@ -75,11 +76,12 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
           data
         );
       } else {
+        console.log("data",data);
         await axios.post(`/api/${params.storeId}/categories`, data);
       }
-      // router.refresh();
-      router.push(`/${params.storeId}/categories`);
+      console.log("82")
       router.refresh();
+      router.push(`/${params.storeId}/categories`);
       toast.success(toastMessage);
     } catch (error: any) {
       toast.error("Something went wrong.");
@@ -154,7 +156,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="categoryId"
+              name="billboardId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Billboard</FormLabel>
