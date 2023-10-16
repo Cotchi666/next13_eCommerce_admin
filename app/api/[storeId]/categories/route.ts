@@ -8,13 +8,18 @@ export async function POST(
     { params }: { params: { storeId: string } }
 ) {
 
-    console.log("vo");
-
+   
     try {
         const { userId } = auth();
         const body = await req.json();
 
         const { name, billboardId } = body;
+         console.log("vo11");
+    console.log("47",userId)
+    console.log("47",name)
+    console.log("47",billboardId)
+    console.log("47",params.storeId)
+
         if (!userId) {
             return new NextResponse("Unauthenticated", { status: 401 });
         }
@@ -27,16 +32,20 @@ export async function POST(
         if (!params.storeId) {
             return new NextResponse("Store id is required", { status: 400 })
         }
-
+      
         const storeByUserId = await prismadb.store.findFirst({
             where: {
                 id: params.storeId,
                 userId
             }
         });
+        console.log("storeByUserId",storeByUserId)
+
         if (!storeByUserId) {
             return new NextResponse("Unauthorized", { status: 403 });
         }
+        console.log("47")
+
         const category = await prismadb.category.create({
             data: {
                 name,
@@ -44,7 +53,7 @@ export async function POST(
                 storeId: params.storeId
             }
         });
-        
+        console.log("47",category)
         return NextResponse.json(category);
     } catch (error) {
         console.log('[CATEGORIES_POST]', error);
@@ -56,7 +65,7 @@ export async function GET(
     req: Request,
     { params }: { params: { storeId: string } }
 ) {
-    console.log("59 ");
+    console.log("59_cate ");
     try {
 
         if (!params.storeId) {
